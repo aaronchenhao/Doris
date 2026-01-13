@@ -5,6 +5,7 @@ import { Dashboard } from './components/Dashboard';
 import { EventCard } from './components/EventCard';
 import { StageSummary } from './components/StageSummary';
 import { EndingScreen } from './components/EndingScreen';
+import { AudioPlayer } from './components/AudioPlayer';
 import { GameState, Phase, Assets, GameEvent, StageSummaryData } from './types';
 import { INITIAL_CASH, TOTAL_STAGES, EVENTS_PER_STAGE, FIXED_LIVING_COST_PER_MONTH, RENT_OPTIONS, CRITICAL_THRESHOLDS } from './constants';
 import { selectEvent, resetUsedEvents } from './services/eventService';
@@ -225,7 +226,11 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-200 pb-20 font-sans">
+    <div className="min-h-screen pb-20 font-sans relative" style={{ 
+      background: '#000000',
+      color: '#e4e4e7'
+    }}>
+      <AudioPlayer />
       <Dashboard stats={gameState.stats} stage={gameState.stage} subStage={gameState.subStage} />
 
       <main className="container mx-auto px-4 py-8">

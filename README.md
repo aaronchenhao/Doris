@@ -1,20 +1,56 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 城市漂流：生存模拟
 
-# Run and deploy your AI Studio app
+一个黑暗现实风格的生存模拟游戏，体验22-28岁单身青年在一线城市的三年生存挑战。
 
-This contains everything you need to run your app locally.
+## 游戏特色
 
-View your app in AI Studio: https://ai.studio/apps/drive/1VLctY05bY6N3NwraxHSrscNWNTvgUNmD
+- **黑暗现实主义风格**：没有完美选项，只有"换一种损失方式"
+- **资产配置系统**：租房、车辆、投资理财的多样化选择
+- **6个阶段，30个事件**：每个阶段都有精心设计的事件
+- **赛博朋克风格UI**：参照赛博徒步的视觉风格
 
-## Run Locally
+## 运行本地开发
 
-**Prerequisites:**  Node.js
+**前置要求：** Node.js 20+
 
+1. 安装依赖：
+   ```bash
+   npm install
+   ```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+2. 运行开发服务器：
+   ```bash
+   npm run dev
+   ```
+
+3. 构建生产版本：
+   ```bash
+   npm run build
+   ```
+
+## 部署
+
+项目已配置 GitHub Actions 自动部署到 GitHub Pages。详见 [DEPLOY.md](./DEPLOY.md)
+
+## 技术栈
+
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- Lucide React (图标)
+
+## 游戏规则
+
+- 初始资金：20万人民币
+- 游戏时长：3年（6个阶段）
+- 核心数值：流动资产、健康、心理、道德
+- 失败条件：任意两项核心数值同时过低
+
+## 事件系统
+
+所有事件数据在 `data/events.ts` 中维护，详见 [data/README.md](./data/README.md)
+
+## 免责声明
+
+本故事纯属虚构，仅用于风险策略模拟。游戏不鼓励投机、赌博或违法行为。

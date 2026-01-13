@@ -73,15 +73,35 @@ export const AssetConfigPanel: React.FC<Props> = ({ currentStage, currentCash, c
   };
 
   const projectedCash = calculateNetBalance();
-  const isValid = projectedCash >= 0;
+  // 阶段6允许负现金流继续（游戏即将结束）
+  const isValid = projectedCash >= 0 || currentStage >= 6;
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-4 md:p-6 space-y-6 animate-in slide-in-from-bottom-10 fade-in duration-500 pb-24">
-      <div className="space-y-2">
-        <h2 className="text-3xl font-serif-sc font-bold text-zinc-100">
+    <div 
+      className="w-full max-w-2xl mx-auto p-4 md:p-6 space-y-6 animate-in slide-in-from-bottom-10 fade-in duration-500 pb-24 relative"
+      style={{
+        background: 'linear-gradient(rgba(0, 0, 0, 0.85), rgba(5, 5, 8, 0.9)), url(https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&q=80&auto=format)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        borderRadius: '8px',
+        minHeight: '500px'
+      }}
+    >
+      {/* 扫描线效果 */}
+      <div 
+        className="absolute inset-0 pointer-events-none rounded-lg"
+        style={{
+          background: 'linear-gradient(transparent 50%, rgba(0, 255, 255, 0.03) 50%)',
+          backgroundSize: '100% 4px',
+          animation: 'scanline 8s linear infinite'
+        }}
+      />
+      <div className="relative z-10">
+      <div className="space-y-2 mb-6">
+        <h2 className="text-3xl md:text-4xl font-serif-sc font-bold cyber-glow" style={{ color: '#00ffff' }}>
           {currentStage === 1 ? "初始资产配置" : "资产重组"}
         </h2>
-        <p className="text-zinc-400 text-sm">
+        <p className="text-sm font-mono" style={{ color: '#9d4edd' }}>
           {currentStage === 1 ? "你手握20万启动资金。请慎重分配。" : "这是你调整策略的机会。卖出资产折旧率40%。"}
         </p>
       </div>
@@ -89,44 +109,58 @@ export const AssetConfigPanel: React.FC<Props> = ({ currentStage, currentCash, c
       <div className="space-y-6">
         
         {/* Housing Choice */}
-        <div className="bg-zinc-900/50 p-4 rounded border border-zinc-800">
-            <h3 className="text-sm font-bold text-zinc-300 uppercase mb-3">居住环境 (Rent)</h3>
+        <div className="cyber-border p-4 rounded-lg mb-4" style={{ 
+          borderColor: '#1a1a2e',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          backdropFilter: 'blur(10px)'
+        }}>
+            <h3 className="text-sm font-mono font-bold uppercase mb-3" style={{ color: '#00ffff' }}>居住环境 (Rent)</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {RENT_OPTIONS.map(opt => (
                     <button
                         key={opt.id}
                         onClick={() => setRent(opt.id as RentType)}
-                        className={`text-left p-3 rounded border transition-all ${
-                            rent === opt.id ? 'border-zinc-200 bg-zinc-800' : 'border-zinc-700 hover:border-zinc-600'
-                        }`}
+                        className="text-left p-3 rounded cyber-border transition-all"
+                        style={{
+                          borderColor: rent === opt.id ? '#00ffff' : '#1a1a2e',
+                          backgroundColor: rent === opt.id ? 'rgba(0, 255, 255, 0.1)' : 'rgba(26, 26, 46, 0.3)',
+                          boxShadow: rent === opt.id ? '0 0 15px rgba(0, 255, 255, 0.3)' : 'none'
+                        }}
                     >
-                        <div className="flex justify-between font-bold text-sm">
+                        <div className="flex justify-between font-bold text-sm font-mono" style={{ color: '#e4e4e7' }}>
                             <span>{opt.label}</span>
-                            <span>¥{opt.costMonth}/月</span>
+                            <span style={{ color: '#9d4edd' }}>¥{opt.costMonth}/月</span>
                         </div>
-                        <p className="text-xs text-zinc-500 mt-1">{opt.desc}</p>
+                        <p className="text-xs mt-1" style={{ color: '#9d4edd' }}>{opt.desc}</p>
                     </button>
                 ))}
             </div>
         </div>
 
         {/* Car Choice */}
-        <div className="bg-zinc-900/50 p-4 rounded border border-zinc-800">
-            <h3 className="text-sm font-bold text-zinc-300 uppercase mb-3">出行方式 (Vehicle)</h3>
+        <div className="cyber-border p-4 rounded-lg mb-4" style={{ 
+          borderColor: '#1a1a2e',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          backdropFilter: 'blur(10px)'
+        }}>
+            <h3 className="text-sm font-mono font-bold uppercase mb-3" style={{ color: '#00ffff' }}>出行方式 (Vehicle)</h3>
             <div className="grid grid-cols-1 gap-2">
                 {CAR_OPTIONS.map(opt => (
                     <button
                         key={opt.id}
                         onClick={() => setCar(opt.id as CarType)}
-                        className={`text-left p-3 rounded border transition-all flex justify-between items-center ${
-                            car === opt.id ? 'border-zinc-200 bg-zinc-800' : 'border-zinc-700 hover:border-zinc-600'
-                        }`}
+                        className="text-left p-3 rounded cyber-border transition-all flex justify-between items-center"
+                        style={{
+                          borderColor: car === opt.id ? '#00ffff' : '#1a1a2e',
+                          backgroundColor: car === opt.id ? 'rgba(0, 255, 255, 0.1)' : 'rgba(26, 26, 46, 0.3)',
+                          boxShadow: car === opt.id ? '0 0 15px rgba(0, 255, 255, 0.3)' : 'none'
+                        }}
                     >
                         <div>
-                            <div className="font-bold text-sm">{opt.label}</div>
-                            <div className="text-xs text-zinc-500">{opt.desc}</div>
+                            <div className="font-bold text-sm font-mono" style={{ color: '#e4e4e7' }}>{opt.label}</div>
+                            <div className="text-xs" style={{ color: '#9d4edd' }}>{opt.desc}</div>
                         </div>
-                        <div className="text-sm font-mono">
+                        <div className="text-sm font-mono" style={{ color: '#9d4edd' }}>
                            {opt.cost > 0 ? `¥${opt.cost.toLocaleString()}` : '¥0'}
                         </div>
                     </button>
@@ -135,8 +169,12 @@ export const AssetConfigPanel: React.FC<Props> = ({ currentStage, currentCash, c
         </div>
 
         {/* Financial Assets */}
-        <div className="bg-zinc-900/50 p-4 rounded border border-zinc-800 space-y-4">
-            <h3 className="text-sm font-bold text-zinc-300 uppercase">理财配置 (Investments)</h3>
+        <div className="cyber-border p-4 rounded-lg space-y-4" style={{ 
+          borderColor: '#1a1a2e',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          backdropFilter: 'blur(10px)'
+        }}>
+            <h3 className="text-sm font-mono font-bold uppercase" style={{ color: '#00ffff' }}>理财配置 (Investments)</h3>
             
             {/* Fixed Deposit */}
             <div>
@@ -205,11 +243,20 @@ export const AssetConfigPanel: React.FC<Props> = ({ currentStage, currentCash, c
       </div>
 
       {/* Footer Status */}
-      <div className="fixed bottom-0 left-0 w-full bg-zinc-950 border-t border-zinc-800 p-4 backdrop-blur-md bg-opacity-95 z-50">
+      <div className="fixed bottom-0 left-0 w-full p-4 backdrop-blur-md z-50 cyber-border" style={{
+        borderTopColor: '#00ffff',
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        boxShadow: '0 -4px 20px rgba(0, 255, 255, 0.2)'
+      }}>
         <div className="max-w-2xl mx-auto flex items-center justify-between">
            <div>
-              <div className="text-[10px] text-zinc-500 uppercase tracking-widest">剩余现金流 (Cash Flow)</div>
-              <div className={`text-2xl font-mono font-bold ${projectedCash < 0 ? 'text-red-500' : 'text-emerald-400'}`}>
+              <div className="text-[10px] font-mono uppercase tracking-widest" style={{ color: '#9d4edd' }}>剩余现金流 (Cash Flow)</div>
+              <div className="text-2xl font-mono font-bold cyber-glow" style={{ 
+                color: projectedCash < 0 ? '#ff006e' : '#39ff14',
+                textShadow: projectedCash < 0 
+                  ? '0 0 20px rgba(255, 0, 110, 0.8)' 
+                  : '0 0 20px rgba(57, 255, 20, 0.8)'
+              }}>
                 ¥{projectedCash.toLocaleString()}
               </div>
            </div>
@@ -221,11 +268,18 @@ export const AssetConfigPanel: React.FC<Props> = ({ currentStage, currentCash, c
                  investments: { stocks, funds, insurance: hasInsurance } 
              }, projectedCash)}
              disabled={!isValid}
-             className="bg-zinc-100 text-black px-8 py-3 font-bold text-sm tracking-widest hover:bg-zinc-300 disabled:bg-zinc-800 disabled:text-zinc-600 transition-colors"
+             className="cyber-button px-8 py-3 font-bold text-sm tracking-widest font-mono"
+             style={{ 
+               color: isValid ? '#00ffff' : '#666',
+               borderColor: isValid ? '#00ffff' : '#333',
+               opacity: isValid ? 1 : 0.5,
+               cursor: isValid ? 'pointer' : 'not-allowed'
+             }}
            >
              {currentStage === 1 ? "确认开局" : "确认调整"}
            </button>
         </div>
+      </div>
       </div>
     </div>
   );

@@ -8,36 +8,54 @@ interface Props {
   subStage: number;
 }
 
-const StatBar: React.FC<{ icon: React.ReactNode, value: number, color: string, label: string }> = ({ icon, value, color, label }) => (
-  <div className="flex flex-col items-center space-y-1 w-full">
-    <div className="flex items-center space-x-1 text-[10px] md:text-xs text-zinc-400 uppercase tracking-widest">
-      {icon} <span>{label}</span>
+const StatBar: React.FC<{ icon: React.ReactNode, value: number, color: string, label: string }> = ({ icon, value, color, label }) => {
+  const barColor = value < 20 ? '#ff006e' : value < 50 ? '#ffbe0b' : '#39ff14';
+  return (
+    <div className="flex flex-col items-center space-y-1 w-full">
+      <div className="flex items-center space-x-1 text-[10px] md:text-xs font-mono uppercase tracking-widest" style={{ color: '#00ffff' }}>
+        {icon} <span>{label}</span>
+      </div>
+      <div className="cyber-bar w-full h-2 overflow-hidden" style={{ borderColor: '#1a1a2e' }}>
+        <div 
+          className="h-full transition-all duration-500 relative" 
+          style={{ 
+            width: `${Math.max(0, Math.min(100, value))}%`,
+            background: `linear-gradient(90deg, ${barColor}, ${barColor}dd)`,
+            boxShadow: `0 0 10px ${barColor}`
+          }}
+        />
+      </div>
+      <div className="text-[10px] font-mono cyber-blink" style={{ color: barColor }}>{value}</div>
     </div>
-    <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-      <div 
-        className={`h-full transition-all duration-500 ${color}`} 
-        style={{ width: `${Math.max(0, Math.min(100, value))}%` }}
-      />
-    </div>
-    <div className="text-[10px] font-mono opacity-80">{value}</div>
-  </div>
-);
+  );
+};
 
 export const Dashboard: React.FC<Props> = ({ stats, stage, subStage }) => {
   return (
-    <div className="sticky top-0 z-50 w-full bg-zinc-950/90 backdrop-blur border-b border-zinc-800 shadow-2xl">
+    <div className="sticky top-0 z-50 w-full backdrop-blur border-b shadow-2xl" style={{ 
+      background: 'rgba(10, 10, 15, 0.95)', 
+      borderColor: '#00ffff',
+      boxShadow: '0 4px 20px rgba(0, 255, 255, 0.2)'
+    }}>
       <div className="max-w-3xl mx-auto px-4 py-3">
         {/* Top Row: Money & Stage */}
         <div className="flex justify-between items-end mb-3">
-          <div className="flex items-center space-x-2 text-zinc-100">
-            <Wallet size={18} className="text-zinc-500" />
-            <span className={`text-xl font-mono font-bold tracking-tight ${stats.cash < 0 ? 'text-red-500' : 'text-zinc-100'}`}>
+          <div className="flex items-center space-x-2">
+            <Wallet size={18} style={{ color: '#9d4edd' }} />
+            <span className={`text-xl font-mono font-bold tracking-tight ${stats.cash < 0 ? 'text-red-500' : ''}`} style={{ 
+              color: stats.cash < 0 ? '#ff006e' : '#39ff14',
+              textShadow: stats.cash >= 0 ? '0 0 10px #39ff14' : '0 0 10px #ff006e'
+            }}>
               ¥{stats.cash.toLocaleString()}
             </span>
           </div>
           <div className="text-right">
-             <div className="text-[10px] text-zinc-500 uppercase tracking-wider">第 {Math.ceil(stage/2)} 年 - {stage % 2 !== 0 ? '上半年' : '下半年'}</div>
-             <div className="text-zinc-300 font-serif-sc text-sm">阶段 {stage} <span className="text-zinc-600">/ 6</span></div>
+             <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: '#9d4edd' }}>
+               第 {Math.ceil(stage/2)} 年 - {stage % 2 !== 0 ? '上半年' : '下半年'}
+             </div>
+             <div className="font-serif-sc text-sm cyber-glow" style={{ color: '#00ffff' }}>
+               阶段 {stage} <span style={{ color: '#9d4edd' }}>/ 6</span>
+             </div>
           </div>
         </div>
 
